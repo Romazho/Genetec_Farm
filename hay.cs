@@ -12,7 +12,7 @@ namespace Farm {
 
     public async Task ConsumeHay(Animal animal){
 
-      while (hayUnits - animal.EATING_CAPACITY > 0){
+      while (animal.isEating && (hayUnits - animal.EATING_CAPACITY) > 0){
         await Task.Delay(1000);
         
         hayUnits -= animal.EATING_CAPACITY;

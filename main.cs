@@ -29,12 +29,25 @@ namespace Farm {
         switch (clientAnswer)
         {
           case "1":
-            assignAnimalToEat(ref animals, true);
+            if (GetNbOfRestingAnimals(ref animals) == 0){
+              Console.ForegroundColor = ConsoleColor.Red;
+              Console.WriteLine("All animals are already eating, can't order more animals.");
+              Console.ResetColor();
+              break;
+            }
+            assignAnimalToEat(ref animals);
             break;
 
           case "2":
             //verify if animals are eating
-            Console.WriteLine("Enter the id of the desired animal:");
+            if (GetNbOfRestingAnimals(ref animals) == animals.Count){
+              Console.ForegroundColor = ConsoleColor.Red;
+              Console.WriteLine("None of all animals are eating. Asign at least one animal to eat.");
+              Console.ResetColor();
+              break;
+            
+            }
+            AssignAnimalToStopEating(ref animals);
             break;
 
           case "3":
@@ -59,23 +72,8 @@ namespace Farm {
 
     }
 
-    static void assignAnimalToEat(ref List<Animal> animals, bool eat){
+    static void assignAnimalToEat(ref List<Animal> animals){
       
-      byte nbOfRestingAnimals = 0;
-      foreach (Animal animal in animals){
-        if (!animal.isEating){
-          nbOfRestingAnimals++;
-        }
-      }  
-
-      if (nbOfRestingAnimals == 0){
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("All animals are already eating, can't order more animals.");
-        Console.ResetColor();
-        return;
-      }
-
-      //Task task;
       string clientAnswer = "";
       bool foundId = false;
       while (!foundId){
@@ -83,7 +81,7 @@ namespace Farm {
         clientAnswer = Console.ReadLine().ToLower();
 
         foreach (Animal animal in animals){
-          if (clientAnswer == animal.Id.ToString()){
+          if (clientAnswer == animal.Id.ToString() && !animal.isEating){
             foundId = true;
             animal.isEating = true;
             Console.WriteLine(animal.GetType().Name + " " + animal.Id + " is ordered to eat.");
@@ -96,7 +94,7 @@ namespace Farm {
             // hayUnits -= animal.EATING_CAPACITY;
             // animal.hayConsumed += animal.EATING_CAPACITY;
 
-            break;
+            break;  //necessary?
           }
 
          }
@@ -107,6 +105,44 @@ namespace Farm {
 
       }
       
+    }
+
+    static void AssignAnimalToStopEating(ref List<Animal> animals){
+      
+      string clientAnswer = "";
+      bool foundId = false;
+      while (!foundId){
+        printNotAvailableAnimals(ref animals);
+        clientAnswer = Console.ReadLine().ToLower();
+
+        foreach (Animal animal in animals){
+          if (clientAnswer == animal.Id.ToString() && animal.isEating){
+            foundId = true;
+            animal.isEating = false;
+            Console.WriteLine(animal.GetType().Name + " " + animal.Id + " is ordered to stop eating.");
+            //hay.ConsumeHay(animal);
+          
+            break;  //necessary?
+          }
+
+         }
+
+        if (!foundId){
+          printTryAgain();
+        }
+
+      }
+      
+    }
+
+    static byte GetNbOfRestingAnimals(ref List<Animal> animals){
+      byte nbOfRestingAnimals = 0;
+      foreach (Animal animal in animals){
+        if (!animal.isEating){
+          nbOfRestingAnimals++;
+        }
+      }
+      return nbOfRestingAnimals;        
     }
 
 
@@ -134,6 +170,16 @@ namespace Farm {
       Console.WriteLine("Available animals: ");
       foreach (Animal animal in animals){
         if (!animal.isEating){
+          Console.WriteLine(animal.GetType().Name + " " + animal.Id);
+        }
+      }
+      Console.WriteLine("Enter the id of the desired animal:");
+    }
+    
+    static void printNotAvailableAnimals(ref List<Animal> animals){
+      Console.WriteLine("NOT Available animals: ");
+      foreach (Animal animal in animals){
+        if (animal.isEating){
           Console.WriteLine(animal.GetType().Name + " " + animal.Id);
         }
       }
