@@ -10,7 +10,9 @@ namespace Animals {
       Id = id;
     }
 
-    public new byte EATING_CAPACITY = 2; //const
+    public override byte EATING_CAPACITY {
+      get { return 2; }
+    }  //const
 
     //override
     // override public async Task Eat(byte hayUnits, bool eat){

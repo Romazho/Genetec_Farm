@@ -89,6 +89,7 @@ namespace Farm {
             Console.WriteLine(animal.GetType().Name + " " + animal.Id + " is ordered to eat.");
             //TODO make animal.Eat();
             hay.ConsumeHay(animal);
+            
             //hayUnits = animal.Eat(hayUnits, eat).Result;
             //hayUnits = Eat(hayUnits, eat, animal);
 
@@ -143,6 +144,8 @@ namespace Farm {
       Console.WriteLine("The list of animals:");
       foreach (Animal animal in animals){
         Console.WriteLine(animals.IndexOf(animal) + 1 + ". " + animal.GetType().Name + " " + animal.Id);
+        Console.WriteLine("Capacity: " + animal.EATING_CAPACITY); //to remove
+        Console.WriteLine("hayConsumed: " + animal.hayConsumed);  //to remove
       }
     }
 

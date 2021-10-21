@@ -8,7 +8,9 @@ namespace Animals {
   abstract class  Animal {
 
     public byte Id {get; set;}
-    public byte EATING_CAPACITY = 0;  //const
+    public virtual byte EATING_CAPACITY {
+      get { return 0; }
+    } 
     public byte hayConsumed = 0;
     public bool isEating = false;
         
