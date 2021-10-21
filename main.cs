@@ -1,13 +1,15 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Animals;
   
 namespace Farm {
       
   class Farm {
 
-    private static byte hayUnits = 100;
+    //private static byte hayUnits = 100;
+    private static Hay hay = new Hay();
     private const byte NB_OF_ANIMALS = 8;
         
     static void Main(string[] args) {
@@ -15,7 +17,7 @@ namespace Farm {
       Console.WriteLine("Welcome to my farm!");
       
       // Creating animals
-      List<Animal> animals = new List<Animal>();
+      var animals = new List<Animal>();
       animals.Add(new Pig(1));
       animals.Add(new Pig(2));
       printAnimals(ref animals);
@@ -27,7 +29,7 @@ namespace Farm {
         switch (clientAnswer)
         {
           case "1":
-            assignAnimalToEat(ref animals);
+            assignAnimalToEat(ref animals, true);
             break;
 
           case "2":
@@ -37,7 +39,7 @@ namespace Farm {
 
           case "3":
             //TODO with async
-            generateReport(ref hayUnits, ref animals);
+            generateReport(hay.hayUnits, animals);
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine("Report generated.");
             Console.ResetColor();
@@ -57,7 +59,7 @@ namespace Farm {
 
     }
 
-    static void assignAnimalToEat(ref List<Animal> animals){
+    static void assignAnimalToEat(ref List<Animal> animals, bool eat){
       
       byte nbOfRestingAnimals = 0;
       foreach (Animal animal in animals){
@@ -67,10 +69,13 @@ namespace Farm {
       }  
 
       if (nbOfRestingAnimals == 0){
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("All animals are already eating, can't order more animals.");
+        Console.ResetColor();
         return;
       }
 
+      //Task task;
       string clientAnswer = "";
       bool foundId = false;
       while (!foundId){
@@ -83,8 +88,16 @@ namespace Farm {
             animal.isEating = true;
             Console.WriteLine(animal.GetType().Name + " " + animal.Id + " is ordered to eat.");
             //TODO make animal.Eat();
+            hay.ConsumeHay(animal);
+            //hayUnits = animal.Eat(hayUnits, eat).Result;
+            //hayUnits = Eat(hayUnits, eat, animal);
+
+            // hayUnits -= animal.EATING_CAPACITY;
+            // animal.hayConsumed += animal.EATING_CAPACITY;
+
             break;
           }
+
          }
 
         if (!foundId){
@@ -93,6 +106,27 @@ namespace Farm {
 
       }
       
+    }
+
+
+    // static Task<byte> Eat(byte hayUnits, bool eat, Animal animal){
+    //     return await animal.Eat(hayUnits, eat);
+    // }
+
+
+    static async void generateReport(byte hayUnits, List<Animal> animals){
+      await generateReportAsync(hayUnits, animals);
+    }
+
+    static async Task generateReportAsync(byte hayUnits, List<Animal> animals){
+      string path = @"Rapport.txt";
+      using (StreamWriter sw = File.CreateText(path)){
+        sw.WriteLine("Hay units left: " + hayUnits);
+        foreach (Animal animal in animals){
+          sw.WriteLine(animal.GetType().Name + " " + animal.Id + " consumed " + animal.hayConsumed);
+        }
+      }
+
     }
 
     static void printAvailableAnimals(ref List<Animal> animals){
@@ -109,16 +143,6 @@ namespace Farm {
       Console.WriteLine("The list of animals:");
       foreach (Animal animal in animals){
         Console.WriteLine(animals.IndexOf(animal) + 1 + ". " + animal.GetType().Name + " " + animal.Id);
-      }
-    }
-
-    static void generateReport(ref byte hayUnits, ref List<Animal> animals){
-      string path = @"Rapport.txt";
-      using (StreamWriter sw = File.CreateText(path)){
-        sw.WriteLine("Hay units left: " + hayUnits);
-        foreach (Animal animal in animals){
-          sw.WriteLine(animal.GetType().Name + " " + animal.Id + " consumed " + animal.hayConsumed);
-        }
       }
     }
 

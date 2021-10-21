@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Animals {
       
@@ -9,15 +10,26 @@ namespace Animals {
       Id = id;
     }
 
-    protected new const byte EATING_CAPACITY = 2;
+    public new byte EATING_CAPACITY = 2; //const
 
-    override public void Eat(ref byte hayUnits){
-      //do a loop
-      hayUnits -= EATING_CAPACITY;
-      hayConsumed += EATING_CAPACITY;
-      System.Threading.Thread.Sleep(1000);
-    }
-    
+    //override
+    // override public async Task Eat(byte hayUnits, bool eat){
+
+    //   while (eat && (hayUnits - EATING_CAPACITY) > 0){
+    //     await Task.Delay(1000);
+        
+    //     hayUnits -= EATING_CAPACITY;
+    //     hayConsumed += EATING_CAPACITY;
+    //     Console.WriteLine("EATING_CAPACITY: " + EATING_CAPACITY);
+    //     Console.WriteLine(this.GetType().Name + " " + Id + " consumed: " + hayConsumed);
+    //     Console.WriteLine("hayUnits: " + hayUnits);
+
+    //     //return hayUnits;
+    //   }
+    //   //return hayUnits;
+
+    // }
+
   }
 
 }
