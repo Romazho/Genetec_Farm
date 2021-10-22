@@ -10,27 +10,33 @@ namespace Farm
   {
 
     public byte hayUnits = 100;
+    private readonly object hayUnitsLock = new object();
 
     public async Task ConsumeHay(Animal animal)
     {
-      while (animal.isEating && (hayUnits - animal.EatingCapacity) > 0)
+      while (animal.isEating)
       {
         await Task.Delay(1000); // 1 second
 
-        if (hayUnits > 0)
+        lock (hayUnitsLock)
         {
-          hayUnits -= animal.EatingCapacity;
-        }
-        else
-        {
-          animal.isEating = false;
-          break;
+          if (hayUnits - animal.EatingCapacity >= 0)
+          {
+            hayUnits -= animal.EatingCapacity;
+          }
+          else
+          {
+            animal.isEating = false;
+            break;
+          }
         }
 
         animal.hayConsumed += animal.EatingCapacity;
       }
 
+      Console.ForegroundColor = ConsoleColor.DarkGreen;
       Console.WriteLine(animal.GetType().Name + " " + animal.Id + " has stopped eating.");
+      Console.ResetColor();
 
     }
 
