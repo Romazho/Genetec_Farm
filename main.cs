@@ -37,7 +37,7 @@ namespace Farm
         switch (clientAnswer)
         {
           case "1":
-            //verify if animal(s) are resting
+            // Verify if animal(s) are resting
             if (GetNbOfRestingAnimals(ref animals) == 0)
             {
               Console.ForegroundColor = ConsoleColor.Red;
@@ -49,14 +49,13 @@ namespace Farm
             break;
 
           case "2":
-            //verify if animal(s) are eating
+            // Verify if animal(s) are eating
             if (GetNbOfRestingAnimals(ref animals) == animals.Count)
             {
               Console.ForegroundColor = ConsoleColor.Red;
               Console.WriteLine("No animal eats. Assign at least one animal to eat.");
               Console.ResetColor();
               break;
-
             }
             AssignAnimalToStopEating(ref animals);
             break;
@@ -82,7 +81,7 @@ namespace Farm
       }
 
       Console.WriteLine("Thank you for simulating :) \nGoodbye!");
-      Console.ReadKey(); //just so you see this message ^ at the end
+      Console.ReadKey(); // Just so you see this message ^ at the end
 
     }
 
