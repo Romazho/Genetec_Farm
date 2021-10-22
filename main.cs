@@ -26,7 +26,8 @@ namespace Farm
       animals.Add(new Sheep(6));
       animals.Add(new Horse(7));
       animals.Add(new Horse(8));
-      PrintAnimals(ref animals);
+      Console.WriteLine("The list of animals:");
+      PrintAnimals(ref animals, false);
 
       string clientAnswer = "";
       while (clientAnswer != "q")
@@ -40,7 +41,7 @@ namespace Farm
             if (GetNbOfRestingAnimals(ref animals) == 0)
             {
               Console.ForegroundColor = ConsoleColor.Red;
-              Console.WriteLine("All animals are already eating, can't order more animals.");
+              Console.WriteLine("All the animals are already eating, can't order more animals.");
               Console.ResetColor();
               break;
             }
@@ -89,7 +90,9 @@ namespace Farm
       bool foundId = false;
       while (!foundId)
       {
-        PrintAvailableAnimals(ref animals);
+        Console.WriteLine("Animals ready to eat: ");
+        PrintAnimals(ref animals, false);
+        Console.WriteLine("Enter the id of the desired animal:");
         clientAnswer = Console.ReadLine().ToLower();
 
         foreach (Animal animal in animals)
@@ -119,7 +122,9 @@ namespace Farm
       bool foundId = false;
       while (!foundId)
       {
-        PrintNotAvailableAnimals(ref animals);
+        Console.WriteLine("Animals ready to stop eating: ");
+        PrintAnimals(ref animals, true);
+        Console.WriteLine("Enter the id of the desired animal:");
         clientAnswer = Console.ReadLine().ToLower();
 
         foreach (Animal animal in animals)
@@ -170,38 +175,18 @@ namespace Farm
       });
     }
 
-    static void PrintAvailableAnimals(ref List<Animal> animals)
+    static void PrintAnimals(ref List<Animal> animals, bool eating)
     {
-      Console.WriteLine("Available animals: ");
       foreach (Animal animal in animals)
       {
-        if (!animal.isEating)
+        if (eating && animal.isEating)
         {
           Console.WriteLine(animal.GetType().Name + " " + animal.Id);
         }
-      }
-      Console.WriteLine("Enter the id of the desired animal:");
-    }
-
-    static void PrintNotAvailableAnimals(ref List<Animal> animals)
-    {
-      Console.WriteLine("NOT Available animals: ");
-      foreach (Animal animal in animals)
-      {
-        if (animal.isEating)
+        else if (!eating && !animal.isEating)
         {
           Console.WriteLine(animal.GetType().Name + " " + animal.Id);
         }
-      }
-      Console.WriteLine("Enter the id of the desired animal:");
-    }
-
-    static void PrintAnimals(ref List<Animal> animals)
-    {
-      Console.WriteLine("The list of animals:");
-      foreach (Animal animal in animals)
-      {
-        Console.WriteLine(animals.IndexOf(animal) + 1 + ". " + animal.GetType().Name + " " + animal.Id);
       }
     }
 

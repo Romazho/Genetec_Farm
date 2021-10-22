@@ -30,7 +30,7 @@ namespace Farm
         animal.hayConsumed += animal.EatingCapacity;
       }
 
-      Console.WriteLine(animal.GetType().Name + " " + animal.Id + " has stop eating.");
+      Console.WriteLine(animal.GetType().Name + " " + animal.Id + " has stopped eating.");
 
     }
 
