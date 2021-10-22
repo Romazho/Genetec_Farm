@@ -13,10 +13,9 @@ namespace Farm
 
     public async Task ConsumeHay(Animal animal)
     {
-
       while (animal.isEating && (hayUnits - animal.EatingCapacity) > 0)
       {
-        await Task.Delay(1000);
+        await Task.Delay(1000); // 1 second
 
         if (hayUnits > 0)
         {
@@ -34,6 +33,7 @@ namespace Farm
       Console.WriteLine(animal.GetType().Name + " " + animal.Id + " has stop eating.");
 
     }
+
   }
 
 }

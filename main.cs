@@ -14,7 +14,6 @@ namespace Farm
 
     static void Main(string[] args)
     {
-
       Console.WriteLine("Welcome to my farm!");
 
       // Creating animals
@@ -82,12 +81,10 @@ namespace Farm
 
       Console.WriteLine("Thank you for simulating :) \nGoodbye!");
       Console.ReadKey(); // Just so you see this message ^ at the end
-
     }
 
     static async void AssignAnimalToEatAsync(List<Animal> animals)
     {
-
       string clientAnswer = "";
       bool foundId = false;
       while (!foundId)
@@ -118,7 +115,6 @@ namespace Farm
 
     static void AssignAnimalToStopEating(ref List<Animal> animals)
     {
-
       string clientAnswer = "";
       bool foundId = false;
       while (!foundId)
