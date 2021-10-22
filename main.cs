@@ -69,6 +69,10 @@ namespace Farm
             break;
 
           case "q":
+            foreach (Animal animal in animals)
+            {
+              animal.isEating = false;
+            }
             break;
 
           default:

@@ -10,7 +10,6 @@ namespace Farm
   {
 
     public byte hayUnits = 100;
-    private readonly object hayLock = new object(); //use?
 
     public async Task ConsumeHay(Animal animal)
     {
@@ -19,11 +18,20 @@ namespace Farm
       {
         await Task.Delay(1000);
 
-        hayUnits -= animal.EatingCapacity;
+        if (hayUnits > 0)
+        {
+          hayUnits -= animal.EatingCapacity;
+        }
+        else
+        {
+          animal.isEating = false;
+          break;
+        }
+
         animal.hayConsumed += animal.EatingCapacity;
-        Console.WriteLine(animal.GetType().Name + " " + animal.Id + " consumed: " + animal.hayConsumed);
-        Console.WriteLine("hayUnits: " + hayUnits);
       }
+
+      Console.WriteLine(animal.GetType().Name + " " + animal.Id + " has stop eating.");
 
     }
   }
