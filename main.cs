@@ -37,8 +37,8 @@ namespace Farm
         switch (clientAnswer)
         {
           case "1":
-            // Verify if animal(s) are resting
-            if (GetNbOfRestingAnimals(ref animals) == 0)
+            // Verify if all animals are eating
+            if (GetNbOfEatingAnimals(animals) == animals.Count)
             {
               Console.ForegroundColor = ConsoleColor.Red;
               Console.WriteLine("All the animals are already eating, can't order more animals.");
@@ -49,8 +49,8 @@ namespace Farm
             break;
 
           case "2":
-            // Verify if animal(s) are eating
-            if (GetNbOfRestingAnimals(ref animals) == animals.Count)
+            // Verify if all animals are resting
+            if (GetNbOfEatingAnimals(animals) == 0)
             {
               Console.ForegroundColor = ConsoleColor.Red;
               Console.WriteLine("No animal eats. Assign at least one animal to eat.");
@@ -58,7 +58,6 @@ namespace Farm
               break;
             }
             AssignAnimalAsync(animals, false);
-            //AssignAnimalToStopEating(ref animals);
             break;
 
           case "3":
@@ -132,17 +131,17 @@ namespace Farm
 
     }
 
-    static byte GetNbOfRestingAnimals(ref List<Animal> animals)
+    static byte GetNbOfEatingAnimals(List<Animal> animals)
     {
-      byte nbOfRestingAnimals = 0;
+      byte nbOfEatingAnimals = 0;
       foreach (Animal animal in animals)
       {
-        if (!animal.isEating)
+        if (animal.isEating)
         {
-          nbOfRestingAnimals++;
+          nbOfEatingAnimals++;
         }
       }
-      return nbOfRestingAnimals;
+      return nbOfEatingAnimals;
     }
 
     static async void GenerateReportAsync(byte hayUnits, List<Animal> animals)
