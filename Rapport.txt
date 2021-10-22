@@ -1,3 +1,3 @@
-Hay units left: 78
-Pig 1 consumed 10
-Pig 2 consumed 12
+Hay units left: 60
+Pig 1 consumed 16
+Pig 2 consumed 24
