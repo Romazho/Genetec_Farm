@@ -6,7 +6,6 @@ Je suppose qu'on veut afficher à la console lorsqu'un animal a fini de manger (
 Je suppose qu'on veut afficher à la console lorsqu'un animal est ordonné à manger ou est ordonné à arrêter.
 
 Note: en faisant cet exercice, je me suis rendu compte des mauvaises réponses que je vous ai données lors de l'entrevue.
-Comme le fait qu'une classe PEUT hériter de 2 interfaces.
-Comme mon explication du principe de synchronisation.
+Comme le fait qu'une classe PEUT hériter de 2 classes (interfaces).
+Comme mon explication du principe de synchronisation qui n'était pas complète.
 Et d'autres :).
-
