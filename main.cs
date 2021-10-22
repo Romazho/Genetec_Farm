@@ -21,6 +21,12 @@ namespace Farm
       var animals = new List<Animal>();
       animals.Add(new Pig(1));
       animals.Add(new Pig(2));
+      animals.Add(new Cow(3));
+      animals.Add(new Sheep(4));
+      animals.Add(new Sheep(5));
+      animals.Add(new Sheep(6));
+      animals.Add(new Horse(7));
+      animals.Add(new Horse(8));
       PrintAnimals(ref animals);
 
       string clientAnswer = "";
