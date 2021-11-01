@@ -27,7 +27,7 @@ namespace Farm
       animals.Add(new Horse(7));
       animals.Add(new Horse(8));
       Console.WriteLine("The list of animals:");
-      PrintAnimals(ref animals, false);
+      PrintAnimals(animals, false);
 
       string clientAnswer = "";
       while (clientAnswer != "q")
@@ -88,46 +88,57 @@ namespace Farm
     // Order an animal to stop eating => assignToEat = false.
     static async void AssignAnimalAsync(List<Animal> animals, bool assignToEat)
     {
-      string clientAnswer = "";
-      bool foundId = false;
-      while (!foundId)
+      if (hay.hayUnits > 0)
       {
-        Console.WriteLine("Available animals: ");
-        PrintAnimals(ref animals, !assignToEat);
-        Console.WriteLine("Enter the id of the desired animal:");
-        clientAnswer = Console.ReadLine().ToLower();
-
-        foreach (Animal animal in animals)
+        string clientAnswer = "";
+        bool foundId = false;
+        while (!foundId)
         {
-          if (clientAnswer == animal.Id.ToString())
+          Console.WriteLine("Available animals: ");
+          PrintAnimals(animals, !assignToEat);
+          Console.WriteLine("Enter the id of the desired animal:");
+          clientAnswer = Console.ReadLine().ToLower();
+
+          foreach (Animal animal in animals)
           {
-            if (assignToEat && !animal.isEating)
+            if (clientAnswer == animal.Id.ToString())
             {
-              foundId = true;
-              animal.isEating = true;
-              Console.ForegroundColor = ConsoleColor.DarkGreen;
-              Console.WriteLine(animal.GetType().Name + " " + animal.Id + " is ordered to eat.");
-              Console.ResetColor();
-              await hay.ConsumeHay(animal);
+              if (assignToEat && !animal.isEating)
+              {
+                foundId = true;
+                animal.isEating = assignToEat;
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine(animal.GetType().Name + " " + animal.Id + " is ordered to eat.");
+                Console.ResetColor();
+                await hay.ConsumeHay(animal);
+              }
+              else if (!assignToEat && animal.isEating)
+              {
+                foundId = true;
+                animal.isEating = assignToEat;
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine(animal.GetType().Name + " " + animal.Id + " is ordered to stop eating.");
+                Console.ResetColor();
+              }
             }
-            else if (!assignToEat && animal.isEating)
-            {
-              foundId = true;
-              animal.isEating = false;
-              Console.ForegroundColor = ConsoleColor.DarkGreen;
-              Console.WriteLine(animal.GetType().Name + " " + animal.Id + " is ordered to stop eating.");
-              Console.ResetColor();
-            }
+
+          }
+
+          if (!foundId)
+          {
+            PrintTryAgain();
           }
 
         }
 
-        if (!foundId)
-        {
-          PrintTryAgain();
-        }
-
       }
+      else
+      {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Out of stock.");
+        Console.ResetColor();
+      }
+      
 
     }
 
@@ -160,7 +171,7 @@ namespace Farm
       });
     }
 
-    static void PrintAnimals(ref List<Animal> animals, bool eating)
+    static void PrintAnimals(List<Animal> animals, bool eating)
     {
       foreach (Animal animal in animals)
       {
